@@ -19,7 +19,7 @@ def calculate_private_subnets(vpc_cidr_range, num_azs):
     vpc = netaddr.IPNetwork(vpc_cidr_range)
     vpc_mask_bits = vpc.prefixlen
     private_subnet_mask_bits = (vpc_mask_bits +
-                               int(math.log(get_next_binary(num_azs), 2)))
+                                int(math.log(get_next_binary(num_azs), 2)))
 
     # list(vpc.subnet(mask_bits)) returns list of netaddr.ip.IPNetwork objects
     # We want a list of the string representations instead
