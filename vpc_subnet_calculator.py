@@ -28,10 +28,18 @@ def subtract_subnets_from_range(cidr_range, subnets):
 
 
 def maximise_subnets(cidr_range, num_subnets):
+    MAX_AWS_VPC_SUBNET_BIT_MASK = 28
+    MIN_AWS_VPC_SUBNET_BIT_MASK = 16
     full_range = netaddr.IPNetwork(cidr_range)
     full_range_mask_bits = full_range.prefixlen
     subnet_mask_bits = (full_range_mask_bits +
                         int(math.log(get_next_binary(num_subnets), 2)))
+    if subnet_mask_bits > MAX_AWS_VPC_SUBNET_BIT_MASK:
+        raise ValueError('Minimum subnet size is /{}'.format(
+                                        MAX_AWS_VPC_SUBNET_BIT_MASK))
+    elif subnet_mask_bits < MIN_AWS_VPC_SUBNET_BIT_MASK:
+        raise ValueError('Maximum subnet size is /{}'.format(
+                                        MIN_AWS_VPC_SUBNET_BIT_MASK))
 
     # list(vpc.subnet(mask_bits)) returns list of netaddr.ip.IPNetwork objects
     # We want a list of the string representations instead

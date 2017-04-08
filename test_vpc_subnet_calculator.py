@@ -65,6 +65,18 @@ class TestMaximiseSubnets(unittest.TestCase):
             '192.168.128.0/19']
         )
 
+    def test_minimum_subnet_size(self):
+        with self.assertRaises(ValueError) as e:
+            maximise_subnets('192.168.0.0/28', 2)
+
+        self.assertTrue('Minimum subnet size is /28' in e.exception)
+
+    def test_maximum_subnet_size(self):
+        with self.assertRaises(ValueError) as e:
+            maximise_subnets('10.0.0.0/8', 2)
+
+        self.assertTrue('Maximum subnet size is /16' in e.exception)
+
 class TestCalculateSubnets(unittest.TestCase):
     def test_calculate_subnets(self):
         self.assertEqual(
@@ -96,6 +108,7 @@ class TestCalculateSubnets(unittest.TestCase):
             '192.168.172.0/22',
             '192.168.176.0/22']
         )
+
 
 if __name__ == '__main__':
     unittest.main()
