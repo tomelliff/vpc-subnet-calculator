@@ -1,0 +1,8 @@
+# Virtualenv and packages
+env/
+
+# Compiled binaries
+*.pyc
+
+# Unit test / coverage reports
+.coverage
