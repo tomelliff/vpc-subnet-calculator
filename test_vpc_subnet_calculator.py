@@ -16,20 +16,20 @@ class TestGetNextBinary(unittest.TestCase):
         self.assertEqual(get_next_binary(8), 16)
 
 class TestCalculateSubnets(unittest.TestCase):
-    def test_calculate_public_subnets(self):
+    def test_calculate_private_subnets(self):
         self.assertEqual(
-            calculate_public_subnets('192.168.0.0/16', 2),
+            calculate_private_subnets('192.168.0.0/16', 2),
             ['192.168.0.0/18',
             '192.168.64.0/18']
         )
         self.assertEqual(
-            calculate_public_subnets('192.168.0.0/16', 3),
+            calculate_private_subnets('192.168.0.0/16', 3),
             ['192.168.0.0/18',
             '192.168.64.0/18',
             '192.168.128.0/18']
         )
         self.assertEqual(
-            calculate_public_subnets('192.168.0.0/16', 5),
+            calculate_private_subnets('192.168.0.0/16', 5),
             ['192.168.0.0/19',
             '192.168.32.0/19',
             '192.168.64.0/19',

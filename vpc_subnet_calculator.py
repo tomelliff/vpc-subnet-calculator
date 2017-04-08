@@ -15,17 +15,17 @@ def get_next_binary(integer):
     return int(next_binary)
 
 
-def calculate_public_subnets(vpc_cidr_range, num_azs):
+def calculate_private_subnets(vpc_cidr_range, num_azs):
     vpc = netaddr.IPNetwork(vpc_cidr_range)
     vpc_mask_bits = vpc.prefixlen
-    public_subnet_mask_bits = (vpc_mask_bits +
+    private_subnet_mask_bits = (vpc_mask_bits +
                                int(math.log(get_next_binary(num_azs), 2)))
 
     # list(vpc.subnet(mask_bits)) returns list of netaddr.ip.IPNetwork objects
     # We want a list of the string representations instead
-    public_subnets = []
-    for public_subnet in vpc.subnet(public_subnet_mask_bits):
-        if len(public_subnets) < num_azs:
-            public_subnets.append(str(public_subnet))
+    private_subnets = []
+    for private_subnet in vpc.subnet(private_subnet_mask_bits):
+        if len(private_subnets) < num_azs:
+            private_subnets.append(str(private_subnet))
 
-    return public_subnets
+    return private_subnets
