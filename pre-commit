@@ -1,4 +1,4 @@
 #!/bin/sh
 
 python -m unittest discover
-flake8 --exclude .git,*.pyc,env,test*
+flake8 --exclude .git,*.pyc,env --ignore F403,F405

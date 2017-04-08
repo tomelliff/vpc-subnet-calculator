@@ -7,7 +7,7 @@ import netaddr
 
 
 def get_next_binary(integer):
-    next_binary = int(math.pow(2, math.ceil(math.log(integer)/math.log(2))))
+    next_binary = int(math.pow(2, math.ceil(math.log(integer) / math.log(2))))
 
     # We explicitly want the *next* binary so if integer is already a binary
     # number then we need to recursively call this method with integer + 1
@@ -38,10 +38,10 @@ def maximise_subnets(cidr_range, num_subnets):
                         int(math.log(get_next_binary(num_subnets), 2)))
     if subnet_mask_bits > MAX_AWS_VPC_SUBNET_BIT_MASK:
         raise ValueError('Minimum subnet size is /{}'.format(
-                                        MAX_AWS_VPC_SUBNET_BIT_MASK))
+                         MAX_AWS_VPC_SUBNET_BIT_MASK))
     elif subnet_mask_bits < MIN_AWS_VPC_SUBNET_BIT_MASK:
         raise ValueError('Maximum subnet size is /{}'.format(
-                                        MIN_AWS_VPC_SUBNET_BIT_MASK))
+                         MIN_AWS_VPC_SUBNET_BIT_MASK))
 
     # list(vpc.subnet(mask_bits)) returns list of netaddr.ip.IPNetwork objects
     # We want a list of the string representations instead
@@ -64,7 +64,7 @@ def calculate_subnets(vpc_cidr_range, num_azs):
 
 def arg_parser():
     parser = argparse.ArgumentParser(
-                        description='Calculate subnets for an AWS VPC')
+        description='Calculate subnets for an AWS VPC')
     parser.add_argument('vpc_cidr_range',
                         help='eg. 10.0.0.0/16')
     parser.add_argument('num_azs', type=int,

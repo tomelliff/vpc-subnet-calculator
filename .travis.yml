@@ -6,6 +6,6 @@ install:
 - pip install coveralls
 script:
 - coverage run --source=vpc_subnet_calculator -m unittest discover
-- flake8 --exclude .git,*.pyc,env,test*
+- flake8 --exclude .git,*.pyc,env --ignore F403,F405
 after_success:
 - coveralls
