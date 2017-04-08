@@ -19,11 +19,9 @@ def subtract_subnets_from_range(cidr_range, subnets):
     full_range = netaddr.IPNetwork(cidr_range)
     # Assume subtracting equal sized subnets for now
     subnet_mask_bits = netaddr.IPNetwork(subnets[0]).prefixlen
-
-    remaining_subnets = []
-    for subnet in full_range.subnet(subnet_mask_bits):
-        if str(subnet) not in subnets:
-            remaining_subnets.append(str(subnet))
+    remaining_subnets = [str(subnet)
+                         for subnet in full_range.subnet(subnet_mask_bits)
+                         if str(subnet) not in subnets]
 
     # Just return the largest single range
     return str(netaddr.cidr_merge(remaining_subnets)[0])

@@ -10,8 +10,6 @@ The intention is that this should be usable as an [external data source for Terr
 
 ## TODO:
 
-- Calculate private subnets
-- Output all subnets combined
 - CLI interface (currently just called by tests)
 - Add [Terraform external data source](https://www.terraform.io/docs/providers/external/data_source.html) compatible input/output
 - Configurable number of "tiers" of subnets
