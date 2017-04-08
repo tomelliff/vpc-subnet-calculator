@@ -1,8 +1,6 @@
 # VPC Subnet Calculator
 
-[![Build Status](https://travis-ci.org/tomelliff/vpc-subnet-calculator.svg?branch=master)](https://travis-ci.org/tomelliff/vpc-subnet-calculator)
-
-[![Coverage Status](https://coveralls.io/repos/github/tomelliff/vpc-subnet-calculator/badge.svg?branch=master)](https://coveralls.io/github/tomelliff/vpc-subnet-calculator?branch=master)
+[![Build Status](https://travis-ci.org/tomelliff/vpc-subnet-calculator.svg?branch=master)](https://travis-ci.org/tomelliff/vpc-subnet-calculator) [![Coverage Status](https://coveralls.io/repos/github/tomelliff/vpc-subnet-calculator/badge.svg?branch=master)](https://coveralls.io/github/tomelliff/vpc-subnet-calculator?branch=master)
 
 Basic Python script to calculate subnets from a VPC CIDR range.
 

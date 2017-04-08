@@ -15,26 +15,48 @@ class TestGetNextBinary(unittest.TestCase):
         self.assertEqual(get_next_binary(4), 8)
         self.assertEqual(get_next_binary(8), 16)
 
-class TestCalculateSubnets(unittest.TestCase):
-    def test_calculate_private_subnets(self):
+class TestSubtractSubnetsFromRange(unittest.TestCase):
+    def test_subtract_subnets_from_range(self):
         self.assertEqual(
-            calculate_private_subnets('192.168.0.0/16', 2),
+            subtract_subnets_from_range(
+                '192.168.0.0/16',
+                ['192.168.0.0/18',
+                '192.168.64.0/18']),
+            '192.168.128.0/17'
+        )
+
+class TestMaximiseSubnets(unittest.TestCase):
+    def test_maximise_subnets(self):
+        self.assertEqual(
+            maximise_subnets('192.168.0.0/16', 2),
             ['192.168.0.0/18',
             '192.168.64.0/18']
         )
         self.assertEqual(
-            calculate_private_subnets('192.168.0.0/16', 3),
+            maximise_subnets('192.168.0.0/16', 3),
             ['192.168.0.0/18',
             '192.168.64.0/18',
             '192.168.128.0/18']
         )
         self.assertEqual(
-            calculate_private_subnets('192.168.0.0/16', 5),
+            maximise_subnets('192.168.0.0/16', 5),
             ['192.168.0.0/19',
             '192.168.32.0/19',
             '192.168.64.0/19',
             '192.168.96.0/19',
             '192.168.128.0/19']
+        )
+
+class TestCalculateSubnets(unittest.TestCase):
+    def test_calculate_subnets(self):
+        self.assertEqual(
+            calculate_subnets('192.168.0.0/16', 3),
+            ['192.168.0.0/18',
+            '192.168.64.0/18',
+            '192.168.128.0/18',
+            '192.168.192.0/20',
+            '192.168.208.0/20',
+            '192.168.224.0/20']
         )
 
 if __name__ == '__main__':

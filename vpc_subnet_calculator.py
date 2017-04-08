@@ -15,17 +15,40 @@ def get_next_binary(integer):
     return int(next_binary)
 
 
-def calculate_private_subnets(vpc_cidr_range, num_azs):
-    vpc = netaddr.IPNetwork(vpc_cidr_range)
-    vpc_mask_bits = vpc.prefixlen
-    private_subnet_mask_bits = (vpc_mask_bits +
-                                int(math.log(get_next_binary(num_azs), 2)))
+def subtract_subnets_from_range(cidr_range, subnets):
+    full_range = netaddr.IPNetwork(cidr_range)
+    # Assume subtracting equal sized subnets for now
+    subnet_mask_bits = netaddr.IPNetwork(subnets[0]).prefixlen
+
+    remaining_subnets = []
+    for subnet in full_range.subnet(subnet_mask_bits):
+        if str(subnet) not in subnets:
+            remaining_subnets.append(str(subnet))
+
+    # Just return the largest single range
+    return str(netaddr.cidr_merge(remaining_subnets)[0])
+
+
+def maximise_subnets(cidr_range, num_subnets):
+    full_range = netaddr.IPNetwork(cidr_range)
+    full_range_mask_bits = full_range.prefixlen
+    subnet_mask_bits = (full_range_mask_bits +
+                        int(math.log(get_next_binary(num_subnets), 2)))
 
     # list(vpc.subnet(mask_bits)) returns list of netaddr.ip.IPNetwork objects
     # We want a list of the string representations instead
-    private_subnets = []
-    for private_subnet in vpc.subnet(private_subnet_mask_bits):
-        if len(private_subnets) < num_azs:
-            private_subnets.append(str(private_subnet))
+    subnets = []
+    for subnet in full_range.subnet(subnet_mask_bits):
+        if len(subnets) < num_subnets:
+            subnets.append(str(subnet))
 
-    return private_subnets
+    return subnets
+
+
+def calculate_subnets(vpc_cidr_range, num_azs):
+    private_subnets = maximise_subnets(vpc_cidr_range, num_azs)
+    remaining_space = subtract_subnets_from_range(vpc_cidr_range,
+                                                  private_subnets)
+    public_subnets = maximise_subnets(remaining_space, num_azs)
+
+    return private_subnets + public_subnets
