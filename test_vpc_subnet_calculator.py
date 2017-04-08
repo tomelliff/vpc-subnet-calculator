@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 import unittest
+import sys
+
+from mock import patch
 
 from vpc_subnet_calculator import *
 
@@ -108,6 +111,30 @@ class TestCalculateSubnets(unittest.TestCase):
             '192.168.172.0/22',
             '192.168.176.0/22']
         )
+
+
+class TestCommandLineInterface(unittest.TestCase):
+    def test_arg_parser(self):
+        sys.argv[1] = '192.168.0.0/16'
+        sys.argv.append('5')
+        self.assertEqual(arg_parser(), ('192.168.0.0/16', 5))
+
+    @patch('__builtin__.print')
+    @patch('vpc_subnet_calculator.arg_parser',
+           return_value=('192.168.0.0/16', 2))
+    @patch('vpc_subnet_calculator.calculate_subnets',
+           return_value=['192.168.0.0/18'
+                         '192.168.64.0/18'
+                         '192.168.128.0/19'
+                         '192.168.160.0/19'])
+    def test_main(self, mock_calculate_subnets, mock_arg_parser, mock_print):
+        main()
+        mock_calculate_subnets.assert_called_once_with(
+                '192.168.0.0/16', 2)
+        # Looped prints seem to get concatenated
+        # rather than called multiple times
+        mock_print.assert_called_with(
+            '192.168.0.0/18192.168.64.0/18192.168.128.0/19192.168.160.0/19')
 
 
 if __name__ == '__main__':

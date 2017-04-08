@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+from __future__ import print_function
+import argparse
 import math
 
 import netaddr
@@ -58,3 +60,26 @@ def calculate_subnets(vpc_cidr_range, num_azs):
     public_subnets = maximise_subnets(remaining_space, num_azs)
 
     return private_subnets + public_subnets
+
+
+def arg_parser():
+    parser = argparse.ArgumentParser(
+                        description='Calculate subnets for an AWS VPC')
+    parser.add_argument('vpc_cidr_range',
+                        help='eg. 10.0.0.0/16')
+    parser.add_argument('num_azs', type=int,
+                        help='Number of AZs to use')
+    args = parser.parse_args()
+
+    return (args.vpc_cidr_range, args.num_azs)
+
+
+def main():
+    vpc_cidr_range, num_azs = arg_parser()
+    subnets = calculate_subnets(vpc_cidr_range, num_azs)
+    for subnet in subnets:
+        print(subnet)
+
+
+if __name__ == '__main__':
+    main()
